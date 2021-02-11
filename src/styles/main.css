@@ -1,1 +1,43 @@
 @import url("https://pro.fontawesome.com/releases/v5.15.0/css/all.css");
+
+.btn {
+  @apply p-2 px-3 text-lg text-gray-500 font-semibold rounded-md;
+}
+
+.primary-btn {
+  @apply bg-green-300 text-white;
+}
+
+.secondary-btn {
+  @apply bg-gray-100 text-black font-normal;
+}
+
+input, label {
+  @apply block m-2;
+}
+
+label {
+  @apply text-blue-400 uppercase;
+}
+
+input {
+  @apply p-2 focus-within:outline-none focus-within:border-indigo-500 border border-gray-900 rounded-md w-full;
+}
+
+input[type="submit"] {
+  @apply w-auto inline-block bg-indigo-400 border-none text-white mx-0 cursor-pointer font-normal;
+}
+
+input[type="checkbox"] {
+  display: inline-block;
+  @apply w-auto;
+}
+
+.tc {
+  display: inline-block;
+}
+
+.tc a {
+  text-decoration: underline;
+  text-transform: capitalize;
+}
