@@ -4,7 +4,7 @@ import Nav from "./Nav"
 
 function Header () {
   return (
-		<header className="bg-blue-50 fixed top-0 left-0 right-0">
+		<header className="bg-blue-50">
 			<div className="container mx-auto p-4">
 				<div className="flex justify-between items-center">
 					<Link to="/">

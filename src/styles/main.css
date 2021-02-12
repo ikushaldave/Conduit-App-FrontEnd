@@ -9,7 +9,7 @@
 }
 
 .secondary-btn {
-  @apply bg-gray-100 text-black font-normal;
+  @apply bg-gray-200 text-black font-normal;
 }
 
 input, label {

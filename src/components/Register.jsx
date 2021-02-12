@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Register () {
   return (
 		<div className="container mx-auto">
-			<div className="flex justify-center items-center h-screen m-8">
+			<div className="flex justify-center items-center mt-10">
 				<div className="w-1/3 p-6 rounded-2xl bg-gray-50 shadow-lg">
 					<form action="/api/user" method="post">
 						<h2 className="text-2xl uppercase text-gray-500 text-center m-8">Register</h2>
