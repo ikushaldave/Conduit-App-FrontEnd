@@ -1,15 +1,15 @@
 @import url("https://pro.fontawesome.com/releases/v5.15.0/css/all.css");
 
 .btn {
-  @apply p-2 px-3 text-lg text-gray-500 font-semibold rounded-md;
+  @apply p-2 px-3 text-lg text-gray-500 font-semibold rounded-md focus:outline-none;
 }
 
 .primary-btn {
-  @apply bg-green-300 text-white;
+  @apply bg-green-300 text-white hover:bg-green-400;
 }
 
 .secondary-btn {
-  @apply bg-gray-200 text-black font-normal;
+  @apply bg-gray-200 text-black font-normal hover:bg-indigo-200;
 }
 
 input, label {
@@ -21,7 +21,7 @@ label {
 }
 
 input {
-  @apply p-2 focus-within:outline-none focus-within:border-indigo-500 border border-gray-900 rounded-md w-full;
+  @apply p-2 focus-within:outline-none border-2 border-gray-900 rounded-md w-full;
 }
 
 input[type="submit"] {
@@ -40,4 +40,24 @@ input[type="checkbox"] {
 .tc a {
   text-decoration: underline;
   text-transform: capitalize;
+}
+
+form span {
+  @apply inline-block p-2;
+}
+
+.w-34 {
+  width: 34%;
+}
+
+.error {
+  @apply border-red-700;
+}
+
+.success {
+  @apply border-green-700;
+}
+
+.logged-nav {
+  @apply absolute w-44 bg-gray-100 flex flex-col shadow-2xl -left-10 top-full my-3 z-10 rounded-lg border border-gray-400 text-gray-700 transition-all;
 }
