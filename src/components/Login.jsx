@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import postRequest from "../utils/postRequest";
 import regexValidation from "../utils/regexValidation";
 class Login extends React.Component {
@@ -52,12 +52,14 @@ class Login extends React.Component {
 		} else {
 			localStorage.setItem("token", data.user.token);
 			const user = { ...data.user };
-			delete user.token;
 			this.props.updateState("user", user);
 		}
 	}
 
-	render() {
+	render () {
+		if (this.props.isLoggedIn) {
+			return <Redirect from="/register" to="/" />;
+		}
 		return (
 			<div className="container mx-auto">
 				<div className="flex justify-center items-center m-16">

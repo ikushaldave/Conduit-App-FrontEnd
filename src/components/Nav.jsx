@@ -22,7 +22,7 @@ class Navigation extends React.Component {
 		if (this.props.isLoggedIn) {
 			Nav = (
 				<>
-					<Link to="/register" className="btn primary-btn mx-4">
+					<Link to="/create/article" className="btn primary-btn mx-4">
 						Write <i className="fas fa-pencil px-2"></i>
 					</Link>
 					<nav className="relative" onClick={this.navHandler}>
@@ -40,9 +40,9 @@ class Navigation extends React.Component {
 							<Link to={`/${user.username}/bookmarks`} className="capitalize p-4 border-b border-gray-500 hover:bg-gray-200">
 								<i className="far fa-bookmark mr-3"></i> Bookmarks
 							</Link>
-							<Link to="/logout" className="capitalize p-4 hover:bg-gray-200">
+							<a href="/logout" className="capitalize p-4 hover:bg-gray-200">
 								<i className="fas fa-sign-out-alt mr-3"></i> Log out
-							</Link>
+							</a>
 						</div>
 					</nav>
 				</>

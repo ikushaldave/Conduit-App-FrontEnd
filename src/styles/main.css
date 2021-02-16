@@ -1,5 +1,9 @@
 @import url("https://pro.fontawesome.com/releases/v5.15.0/css/all.css");
 
+.loader {
+  z-index: -10;
+}
+
 .btn {
   @apply p-2 px-3 text-lg text-gray-500 font-semibold rounded-md focus:outline-none;
 }

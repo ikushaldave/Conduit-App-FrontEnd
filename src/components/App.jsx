@@ -5,55 +5,81 @@ import Header from "./Header";
 import Home from "./Home";
 import Register from "./Register";
 import Login from "./Login";
+import NewPost from "./CreatePost";
 
 class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: null,
+			isLoggedIn: false,
+    };
+	}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-      isLoggedIn: false
-    }
-  }
+	updateState = (key, value) => {
+		this.setState({
+			[key]: value,
+			isLoggedIn: localStorage.getItem("token") ? true : false,
+		});
+	};
 
-  updateState = (key, value) => {
-    this.setState({
-        [key]: value,
-        isLoggedIn: localStorage.getItem("token") ? true : false
-      });
-  }
-
-  async componentDidMount () {
-    console.log("mounting");
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (token) {
-      const data = await getRequest("/api/user")
-      console.log(data)
-      if (data.errors?.errorCode === "auth-00") {
-        localStorage.clear();
-        this.updateState("user", null)
-      } else {
-        const user = { ...data.user };
-        delete user.token;
+	getUser = async () => {
+		const token = localStorage.getItem("token");
+		if (token) {
+			const data = await getRequest("/api/user");
+			console.log(data);
+			if (data.errors?.errorCode === "auth-00") {
+				localStorage.clear();
+        this.updateState("user", null);
+        return false
+			} else {
+				const user = { ...data.user };
         this.updateState("user", user);
+        return true;
       }
     }
+    return false
+  };
+
+  logout = () => {
+    localStorage.clear();
+    this.updateState("user", null)
   }
 
+	async componentDidMount() {
+		console.log("Mounting");
+		this.getUser();
+	}
+
   render () {
-    return (
-		<Router>
-        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
-			<Switch>
-				<Route path="/register">{this.state.isLoggedIn ? <Redirect to="/" /> : <Register updateState={this.updateState} />}</Route>
-        <Route path="/login">{this.state.isLoggedIn ? <Redirect to="/" /> : <Login updateState={this.updateState} />}</Route>
-        <Route path="/logout"><Redirect to="/" /></Route>
-				<Route path="/"><Home /></Route>
-			</Switch>
-		</Router>
-	);
-  }
+    const { isLoggedIn, user } = this.state;
+		return (
+			<Router>
+				<Header isLoggedIn={isLoggedIn} user={user} />
+				<Switch>
+					<Route path="/register">
+						<Register updateState={this.updateState} isLoggedIn={isLoggedIn} />
+					</Route>
+					<Route path="/login">
+						<Login updateState={this.updateState} isLoggedIn={isLoggedIn} />
+					</Route>
+					<Route
+						path="/logout"
+						component={() => {
+							this.logout();
+							return <Redirect to="/" />;
+						}}
+					></Route>
+					<Route path="/create/article">
+						{isLoggedIn ? <NewPost /> : <Redirect to="/login" />}
+					</Route>
+					<Route path="/" exact>
+						<Home />
+					</Route>
+				</Switch>
+			</Router>
+		);
+	}
 }
 
 export default App;
