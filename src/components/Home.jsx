@@ -28,6 +28,7 @@ class Home extends React.Component {
   }
 
   async componentWillUnmount () {
+    console.log("Unmounting")
     this.setState({
       tags: null,
       articles: null
@@ -49,7 +50,7 @@ class Home extends React.Component {
               <Articles articles={articles}/>
             </div>
           </section>
-          <aside className="ml-2 relative mx-8 border border-gray-400 rounded-md p-4">
+          <aside className="w-1/3">
             <Tags tags={tags}/>
           </aside>
         </div>
@@ -57,7 +58,5 @@ class Home extends React.Component {
     );
   }
 }
-
-
 
 export default Home;

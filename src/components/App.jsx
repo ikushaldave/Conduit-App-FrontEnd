@@ -5,7 +5,9 @@ import Header from "./Header";
 import Home from "./Home";
 import Register from "./Register";
 import Login from "./Login";
+import Article from "./Article";
 import NewPost from "./CreatePost";
+import EditPost from "./EditPost";
 
 class App extends React.Component {
 	constructor(props) {
@@ -73,6 +75,8 @@ class App extends React.Component {
 					<Route path="/create/article">
 						{isLoggedIn ? <NewPost /> : <Redirect to="/login" />}
 					</Route>
+					<Route path="/article/:slug/edit" component={({ match }) => <EditPost user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn}/>} />
+					<Route path="/article/:slug" component={({ match }) => <Article user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn}/>} />
 					<Route path="/" exact>
 						<Home />
 					</Route>

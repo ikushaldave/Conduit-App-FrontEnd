@@ -65,8 +65,6 @@ class Register extends React.Component {
 
 	render () {
 
-		console.log(this.props.isLoggedIn);
-
 		if (this.props.isLoggedIn) {
 			return <Redirect from="/register" to="/" />
 		}
@@ -94,7 +92,7 @@ class Register extends React.Component {
 								</label>
 							</div>
 							<div className="text-right">
-								<input type="submit" value="Sign Up" className="btn" required />
+								<input type="submit" value="Sign Up" className="btn" />
 							</div>
 						</form>
 						<p className="text-gray-700 text-center m-2">

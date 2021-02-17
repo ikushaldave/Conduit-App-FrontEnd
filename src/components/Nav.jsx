@@ -37,9 +37,6 @@ class Navigation extends React.Component {
 							<Link to={`/${user.username}/published`} className="capitalize p-4 border-t border-b border-gray-500 hover:bg-gray-200">
 								<i className="fal fa-paper-plane mr-3"></i> Published
 							</Link>
-							<Link to={`/${user.username}/bookmarks`} className="capitalize p-4 border-b border-gray-500 hover:bg-gray-200">
-								<i className="far fa-bookmark mr-3"></i> Bookmarks
-							</Link>
 							<a href="/logout" className="capitalize p-4 hover:bg-gray-200">
 								<i className="fas fa-sign-out-alt mr-3"></i> Log out
 							</a>

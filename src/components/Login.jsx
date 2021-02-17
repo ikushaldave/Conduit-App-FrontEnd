@@ -74,7 +74,7 @@ class Login extends React.Component {
 							<input type="password" name="password" id="password" required value={this.state.password} onChange={this.changeHandler} />
 							<span className="text-red-700 text-sm">{this.state.errors.password || ""}</span>
 							<div className="text-right">
-								<input type="submit" value="Login" className="btn" required />
+								<input type="submit" value="Login" className="btn" />
 							</div>
 						</form>
 						<p className="text-gray-700 text-center m-2">
