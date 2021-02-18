@@ -9,6 +9,7 @@ import Article from "./Article";
 import NewPost from "./CreatePost";
 import EditPost from "./EditPost";
 import Setting from "./Setting";
+import Profile from "./Profile";
 
 class App extends React.Component {
 	constructor(props) {
@@ -68,6 +69,7 @@ class App extends React.Component {
 					<Route path="/article/:slug/edit" component={({ match }) => <EditPost user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
 					<Route path="/article/:slug" component={({ match }) => <Article user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
 					<Route path="/setting" component={({ match }) => <Setting user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
+					<Route path="/profile/:username" component={({ match }) => <Profile user={this.state.user} username={match.params.username} isLoggedIn={this.state.isLoggedIn} />} />
 					<Route
 						path="/logout"
 						component={() => {

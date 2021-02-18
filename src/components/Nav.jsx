@@ -31,7 +31,7 @@ class Navigation extends React.Component {
 							<h3 className="inline-block ml-2 text-gray-700 text-sm">{`@${user.username}`}</h3>
 						</button>
 						<div className={this.state.isOpened ? "logged-nav" : "hidden"}>
-							<Link to={`/${user.username}`} className="capitalize p-4 hover:bg-gray-200">
+							<Link to={`/profile/${user.username}`} className="capitalize p-4 hover:bg-gray-200">
 								<i className="fal fa-user-circle mr-3"></i> Profile
 							</Link>
 							<Link to={`/setting`} className="capitalize p-4 border-t border-b border-gray-500 hover:bg-gray-200">
