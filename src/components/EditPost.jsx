@@ -2,8 +2,9 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import Loader from "./Loader";
 import NotFound from "./NotFound";
-import putRequest from "../utils/putRequest";
 import getRequest from "../utils/getRequest";
+import putRequest from "../utils/putRequest";
+import deleteRequest from "../utils/deleteRequest";
 
 class EditPost extends React.Component {
 	constructor(props) {
@@ -12,27 +13,60 @@ class EditPost extends React.Component {
 			title: "",
 			description: "",
 			body: "",
-      tagList: "",
+			tagList: "",
+			author: null,
 			error: "",
-			article: null
+			article: null,
+			isDeleted: false,
+			errors: {
+				title: "",
+				description: "",
+				body: "",
+			},
 		};
 	}
 
 	changeHandler = ({ target }) => {
 		const { name, value } = target;
+		const { errors } = this.state;
+		switch (name) {
+			case "title":
+				errors.title = value.trim().length > 15 ? "" : "title should be minimum 15 characters";
+				break;
+			case "description":
+				errors.description = value.trim().length > 25 ? "" : "description should be minimum 25 characters";
+				break;
+			case "body":
+				errors.body = value.trim().length > 100 ? "" : "content should be minimum 100 characters";
+				break;
+			default:
+				break;
+		}
+
 		this.setState({
 			[name]: value,
+			errors
 		});
 	};
 
 	editHandler = async (e) => {
     e.preventDefault();
     const { slug } = this.props;
-		const { article } = await putRequest(`/api/articles/${slug}`, { article: { ...this.state, tagList: this.state.tagList.split(",").map((tag) => tag.trim().toLowerCase()) } });
+		const { article, errors } = await putRequest(`/api/articles/${slug}`, { article: { ...this.state, tagList: this.state.tagList.split(",").map((tag) => tag.trim().toLowerCase()) } });
 		this.setState({
 			article: article ?? null,
+			error: errors ? true : false,
 		});
 	};
+
+	deleteHandler = async (e) => {
+		const { slug } = this.props;
+		const { article, errors } = await deleteRequest(`/api/articles/${slug}`);
+		this.setState({
+			isDeleted: article ? true : false,
+			error: errors ? true : false
+		});
+	}
 
   async componentDidMount () {
     const { slug } = this.props;
@@ -42,16 +76,19 @@ class EditPost extends React.Component {
 			description: article?.description ?? "",
 			body: article?.body ?? "",
 			tagList: article?.tagList.join(",") ?? "",
+			author: article?.author.username,
 			error: errors ? true : false,
 		});
   }
 
   render () {
-    console.log(this.props, "editpost")
-    const { title, description, body, tagList, error, article } = this.state;
+		const { isLoggedIn, user } = this.props
+    const { title, description, body, tagList, error, author, article, isDeleted } = this.state;
 
-    if (error) return <NotFound />
-		if (!(title && description && body)) return <Loader />
+		if (isDeleted) return <Redirect to="/" />;
+		if (error) return <NotFound />;
+		if (!(title && description && body) || !(isLoggedIn && user)) return <Loader />;
+		if (user.username !== author) return <Redirect to="/" />;
 		if (article) return <Redirect to={`/article/${article.slug}`} />;
 
 		return (
@@ -67,6 +104,7 @@ class EditPost extends React.Component {
 					<label htmlFor="tagList">Tags -</label>
 					<input type="text" name="tagList" id="tagList" placeholder="Multiple tags should be separated by commas (cars,books)" value={tagList} onChange={this.changeHandler} />
 					<div className="text-right">
+						<button className="btn del-btn mx-4" onClick={this.deleteHandler}>Delete</button>
 						<input type="submit" value="Update Post" className="btn" />
 					</div>
 				</form>

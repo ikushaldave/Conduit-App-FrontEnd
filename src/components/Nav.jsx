@@ -27,15 +27,15 @@ class Navigation extends React.Component {
 					</Link>
 					<nav className="relative" onClick={this.navHandler}>
 						<button className="btn secondary-btn">
-							<img src={user.image || `http://tinygraphs.com/labs/isogrids/hexa16/${user.username}?theme=frogideas&numcolors=4&size=220&fmt=svg`} alt="profile" className="w-8 h-8 rounded-full object-contain inline-block" />
+							<img src={user.image || "/dummy-profile.png"} alt="profile" className="w-8 h-8 rounded-full object-cover inline-block" />
 							<h3 className="inline-block ml-2 text-gray-700 text-sm">{`@${user.username}`}</h3>
 						</button>
 						<div className={this.state.isOpened ? "logged-nav" : "hidden"}>
 							<Link to={`/${user.username}`} className="capitalize p-4 hover:bg-gray-200">
 								<i className="fal fa-user-circle mr-3"></i> Profile
 							</Link>
-							<Link to={`/${user.username}/published`} className="capitalize p-4 border-t border-b border-gray-500 hover:bg-gray-200">
-								<i className="fal fa-paper-plane mr-3"></i> Published
+							<Link to={`/setting`} className="capitalize p-4 border-t border-b border-gray-500 hover:bg-gray-200">
+								<i className="fal fa-user-cog mr-3"></i> Setting
 							</Link>
 							<a href="/logout" className="capitalize p-4 hover:bg-gray-200">
 								<i className="fas fa-sign-out-alt mr-3"></i> Log out
