@@ -20,7 +20,6 @@ class Author extends React.Component {
 
   render () {
     const { author } = this.props
-    console.log(this.state.isOpened);
 
     return (
 		<div className="border-t border-b border-gray-300 py-4 flex items-center justify-between">

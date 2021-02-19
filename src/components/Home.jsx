@@ -12,14 +12,14 @@ class Home extends React.Component {
 			tags: [],
 			showingArticle: 0,
 			activeFeed: "global",
-			activeTags: []
+			activeTags: [],
 		};
 	}
 
 	fetchFn = async (path) => {
 		const { tags } = await getRequest("/api/tags");
-    const { articles, articlesCount, allArticlesCount } = await getRequest(path);
-    console.log(articles);
+		const { articles, articlesCount, allArticlesCount } = await getRequest(path);
+		console.log(articles);
 		this.setState({
 			tags,
 			articles,
@@ -46,47 +46,46 @@ class Home extends React.Component {
 			tags: [],
 			showingArticle: 0,
 		});
-	}
+	};
 
-	componentDidMount () {
+	componentDidMount() {
 		console.log("Home Mounting");
 		this.fetchFn("/api/articles");
 	}
 
-	componentDidUpdate () {
-		console.log("updating")
-	}
-
 	componentWillUnmount() {
 		console.log("Home Unmounting");
-		this.setState({
-			tags: null,
-			articles: null,
-		});
 	}
 
 	render() {
+		console.log("Home Rendering");
 		const { tags, articles, activeFeed } = this.state;
 		const { isLoggedIn, user } = this.props;
 
-		if (!(articles)) {
+		if (!articles) {
 			return <Loader />;
 		}
 
+		console.log("Feed Fetched");
+
 		return (
 			<main className="container mx-auto">
-				<div className="flex mx-auto my-8">
-					<section className="p-4">
+				<div className="flex mx-auto my-8 justify-between">
+					<section className="w-2/3 p-4">
 						<div className="flex flex-col">
 							<div className="mb-4 border-b-2 border-green-500">
-								<button className={ activeFeed === "global" ? "btn feed-btn feed-active": "btn feed-btn"} onClick={() => this.updateFeed("global")}>Global Feed</button>
-								<button className={!(isLoggedIn && user) ? "hidden" : (activeFeed === "user") ? "btn feed-btn feed-active": "btn feed-btn" } onClick={() => this.updateFeed("user")}>User Feed</button>
+								<button className={activeFeed === "global" ? "btn feed-btn feed-active" : "btn feed-btn"} onClick={() => this.updateFeed("global")}>
+									Global Feed
+								</button>
+								<button className={!(isLoggedIn && user) ? "hidden" : activeFeed === "user" ? "btn feed-btn feed-active" : "btn feed-btn"} onClick={() => this.updateFeed("user")}>
+									User Feed
+								</button>
 							</div>
 							<Articles articles={articles} />
 						</div>
 					</section>
 					<aside className="w-1/3 mt-12">
-						<Tags tags={tags} tagHandler={ this.tagHandler }/>
+						<Tags tags={tags} tagHandler={this.tagHandler} />
 					</aside>
 				</div>
 			</main>

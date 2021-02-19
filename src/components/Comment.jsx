@@ -4,7 +4,6 @@ import getRequest from "../utils/getRequest";
 import postRequest from "../utils/postRequest";
 
 class CommentSkelton extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -20,32 +19,29 @@ class CommentSkelton extends React.Component {
 			return {
 				commentDialog: !prev.commentDialog,
 			};
-		})
-	}
+		});
+	};
 
 	changeHandler = ({ target }) => {
 		const { name, value } = target;
 		this.setState({
-			[name]: value
-		})
-	}
-
+			[name]: value,
+		});
+	};
 
 	getComments = async () => {
 		const { slug } = this.props;
 		const { comments } = await getRequest(`/api/articles/${slug}/comments`);
 		return comments;
-	}
+	};
 
 	addComment = async (e) => {
 		e.preventDefault();
 		const { slug, isLoggedIn } = this.props;
 		if (!isLoggedIn) return;
 
-		const { comment, errors } = await postRequest(`/api/articles/${slug}/comments`, { comment: { body: this.state.comment } });
+		const { errors } = await postRequest(`/api/articles/${slug}/comments`, { comment: { body: this.state.comment } });
 		const comments = await this.getComments();
-
-		console.log(comment, comments);
 
 		this.setState((prev) => {
 			return {
@@ -54,19 +50,27 @@ class CommentSkelton extends React.Component {
 				error: errors ? true : false,
 			};
 		});
-	}
+	};
 
-	async componentDidMount () {
-		const comments = await this.getComments()
+	async componentDidMount() {
+		console.log("Mounting Comments");
+		const comments = await this.getComments();
 		this.setState({
 			comments: comments ?? [],
 		});
 	}
+	comment;
+	componentWillUnmount() {
+		console.log("unmounting comments");
+	}
 
 	render () {
+		console.log("rendering comments")
 		const { isLoggedIn } = this.props;
 		const { commentDialog, comments, comment } = this.state;
 
+		if (comments.length === 0) return <></>;
+		console.log("comments fetched");
 		return (
 			<section>
 				<div className="container mx-auto">
@@ -85,15 +89,15 @@ class CommentSkelton extends React.Component {
 						</div>
 						<div>
 							{comments.map((comment) => (
-								<Comment comment={ comment } key={ comment.id }/>
+								<Comment comment={comment} key={comment.id} />
 							))}
 						</div>
 					</div>
 					<div className={commentDialog ? "fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center" : "hidden"}>
 						<div className="relative w-1/3 p-6 rounded-2xl bg-gray-50 shadow-lg">
-							<form onSubmit={ this.addComment }>
+							<form onSubmit={this.addComment}>
 								<h2 className="text-2xl uppercase text-gray-500 text-center m-8">Comment</h2>
-								<textarea name="comment" id="comment" cols="30" rows="6" placeholder="Write Here..." minLength="4" required value={ comment } onChange={this.changeHandler  }></textarea>
+								<textarea name="comment" id="comment" cols="30" rows="6" placeholder="Write Here..." minLength="4" required value={comment} onChange={this.changeHandler}></textarea>
 								<div className="text-right">
 									<input type="submit" value="post comment" className="btn" required />
 								</div>
@@ -103,7 +107,8 @@ class CommentSkelton extends React.Component {
 									To post comment please
 									<Link to="/login" className="text-gray-900 m-1">
 										login
-									</Link> or
+									</Link>{" "}
+									or
 									<Link to="/register" className="text-gray-900 m-1">
 										Register
 									</Link>

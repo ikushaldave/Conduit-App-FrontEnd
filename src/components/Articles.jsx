@@ -15,7 +15,7 @@ function ArticleCard (props) {
 	return (
 		<div className="flex justify-between items-center bg-gray-50 shadow-lg p-4 rounded-xl mb-8">
 			<img src="https://images.unsplash.com/photo-1610859234494-6cb68d6361a2?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80" alt="" className="w-48 object-cover rounded-md" />
-			<div className="p-4">
+			<div className="p-4 flex-grow">
 				<h3 className="text-xl text-gray-700 font-extrabold my-1">
 					<Link to={`/article/${article.slug}`}>{article.title}</Link>
 				</h3>

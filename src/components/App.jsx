@@ -17,7 +17,7 @@ class App extends React.Component {
 		this.state = {
 			user: null,
 			isLoggedIn: false,
-    };
+		};
 	}
 
 	updateState = (key, value) => {
@@ -33,25 +33,26 @@ class App extends React.Component {
 			const data = await getRequest("/api/user");
 			if (data.errors?.errorCode === "auth-00") {
 				localStorage.clear();
-        this.updateState("user", null);
+				this.updateState("user", null);
 			} else {
 				const user = { ...data.user };
-        this.updateState("user", user);
-      }
-    }
-  };
+				this.updateState("user", user);
+			}
+		}
+	};
 
-  logout = () => {
-    localStorage.clear();
-  }
+	logout = () => {
+		localStorage.clear();
+	};
 
 	componentDidMount() {
 		console.log("App Mounting");
 		this.getUser();
 	}
 
-  render () {
-    const { isLoggedIn, user } = this.state;
+	render() {
+		console.log("App Rendering");
+		const { isLoggedIn, user } = this.state;
 		return (
 			<Router>
 				<Header isLoggedIn={isLoggedIn} user={user} />

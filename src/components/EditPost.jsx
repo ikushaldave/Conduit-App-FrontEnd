@@ -53,6 +53,7 @@ class EditPost extends React.Component {
     e.preventDefault();
     const { slug } = this.props;
 		const { article, errors } = await putRequest(`/api/articles/${slug}`, { article: { ...this.state, tagList: this.state.tagList.split(",").map((tag) => tag.trim().toLowerCase()) } });
+		console.log(errors, "edit handler");
 		this.setState({
 			article: article ?? null,
 			error: errors ? true : false,
@@ -70,7 +71,8 @@ class EditPost extends React.Component {
 
   async componentDidMount () {
     const { slug } = this.props;
-    const { article, errors } = await getRequest(`/api/articles/${slug}`);
+		const { article, errors } = await getRequest(`/api/articles/${slug}`);
+		console.log(errors, "mounting of edit page");
     this.setState({
 			title: article?.title ?? "",
 			description: article?.description ?? "",

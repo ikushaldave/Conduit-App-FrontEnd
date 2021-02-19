@@ -11,19 +11,19 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      followers: null,
-      followings: null,
-      published: null,
-      activeTab: "published"
-    }
+		user: null,
+		followers: [],
+		followings: [],
+		published: [],
+		activeTab: "published",
+	};
   }
 
   updateTab = (tab) => {
     this.setState({
-      activeTab: tab,
-      [tab]: null,
-    })
+		activeTab: tab,
+		[tab]: [],
+	});
     this.fetchFn(tab)
   }
 
@@ -56,7 +56,7 @@ class Profile extends React.Component {
 
   conditionalRendering = () => {
     const { activeTab, published } = this.state;
-
+    console.log(published, "published");
     switch (activeTab) {
       case "published":
         return <Articles articles={published} />;

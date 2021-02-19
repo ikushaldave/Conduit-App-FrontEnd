@@ -15,9 +15,9 @@ class Article extends React.Component {
 	}
 
 	async componentDidMount () {
+		console.log("Article Mounting");
 		const { slug } = this.props
 		const { article, errors } = await getRequest(`/api/articles/${slug}`);
-		console.log(article, errors);
 
 		this.setState({
 			article: article ?? {},
@@ -27,12 +27,14 @@ class Article extends React.Component {
 	}
 
 	render () {
-		console.log(this.props);
+		console.log("articles rendering");
 		const { article, error } = this.state;
 		const { user, slug, isLoggedIn } = this.props;
 
 		if (!(article)) return <Loader />
 		if (error) return <NotFound />
+
+		console.log("articles fetched");
 
 		return (
 			<div className="container mx-auto">
@@ -64,7 +66,7 @@ class Article extends React.Component {
 						</div>
 					</aside>
 				</div>
-				<Comment isLoggedIn={ isLoggedIn } slug={ slug }/>
+				<Comment isLoggedIn={isLoggedIn} slug={slug} />
 				<div className={ (article.author.username === user?.username) ? "fixed bottom-20 right-12" : "hidden" }>
 					<Link to={`/article/${slug}/edit`} className="bg-green-100 text-2xl text-gray-800 font-bold p-4 rounded-full w-10 h-10">
 						<i className="fad fa-edit"></i>
