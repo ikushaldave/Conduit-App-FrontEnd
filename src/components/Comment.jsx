@@ -59,7 +59,7 @@ class CommentSkelton extends React.Component {
 			comments: comments ?? [],
 		});
 	}
-	comment;
+
 	componentWillUnmount() {
 		console.log("unmounting comments");
 	}
@@ -70,7 +70,7 @@ class CommentSkelton extends React.Component {
 		const { commentDialog, comments, comment } = this.state;
 
 		if (comments.length === 0) return <></>;
-		console.log("comments fetched");
+
 		return (
 			<section>
 				<div className="container mx-auto">

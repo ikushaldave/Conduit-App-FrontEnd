@@ -18,8 +18,8 @@ class Home extends React.Component {
 
 	fetchFn = async (path) => {
 		const { tags } = await getRequest("/api/tags");
-		const { articles, articlesCount, allArticlesCount } = await getRequest(path);
-		console.log(articles);
+		const { articles, articlesCount, allArticlesCount } = await getRequest("api/articles");
+		console.log(articles, "articles");
 		this.setState({
 			tags,
 			articles,
@@ -50,11 +50,7 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		console.log("Home Mounting");
-		this.fetchFn("/api/articles");
-	}
-
-	componentWillUnmount() {
-		console.log("Home Unmounting");
+		this.fetchFn();;
 	}
 
 	render() {
@@ -66,21 +62,19 @@ class Home extends React.Component {
 			return <Loader />;
 		}
 
-		console.log("Feed Fetched");
-
 		return (
 			<main className="container mx-auto">
 				<div className="flex mx-auto my-8 justify-between">
 					<section className="w-2/3 p-4">
 						<div className="flex flex-col">
-							<div className="mb-4 border-b-2 border-green-500">
+							<nav className="mb-4 border-b-2 border-green-500">
 								<button className={activeFeed === "global" ? "btn feed-btn feed-active" : "btn feed-btn"} onClick={() => this.updateFeed("global")}>
 									Global Feed
 								</button>
 								<button className={!(isLoggedIn && user) ? "hidden" : activeFeed === "user" ? "btn feed-btn feed-active" : "btn feed-btn"} onClick={() => this.updateFeed("user")}>
 									User Feed
 								</button>
-							</div>
+							</nav>
 							<Articles articles={articles} />
 						</div>
 					</section>

@@ -10,6 +10,8 @@ import NewPost from "./CreatePost";
 import EditPost from "./EditPost";
 import Setting from "./Setting";
 import Profile from "./Profile";
+import Loader from "./Loader";
+import NotFound from "./NotFound";
 
 class App extends React.Component {
 	constructor(props) {
@@ -28,9 +30,11 @@ class App extends React.Component {
 	};
 
 	getUser = async () => {
+		console.log("App Getting User");
 		const token = localStorage.getItem("token");
 		if (token) {
 			const data = await getRequest("/api/user");
+			console.log(data, "user");
 			if (data.errors?.errorCode === "auth-00") {
 				localStorage.clear();
 				this.updateState("user", null);
@@ -43,6 +47,7 @@ class App extends React.Component {
 
 	logout = () => {
 		localStorage.clear();
+		this.updateState("user", null);
 	};
 
 	componentDidMount() {
@@ -53,35 +58,62 @@ class App extends React.Component {
 	render() {
 		console.log("App Rendering");
 		const { isLoggedIn, user } = this.state;
+		if (localStorage.getItem("token") && !user && !isLoggedIn) return <Loader />;
+		console.log(user, isLoggedIn);
 		return (
 			<Router>
-				<Header isLoggedIn={isLoggedIn} user={user} />
-				<Switch>
-					<Route path="/" exact>
-						<Home isLoggedIn={isLoggedIn} user={this.state.user} />
-					</Route>
-					<Route path="/register">
-						<Register updateState={this.updateState} isLoggedIn={isLoggedIn} user={this.state.user} />
-					</Route>
-					<Route path="/login">
-						<Login updateState={this.updateState} isLoggedIn={isLoggedIn} user={this.state.user} />
-					</Route>
-					<Route path="/create/article">{isLoggedIn ? <NewPost /> : <Redirect to="/login" />}</Route>
-					<Route path="/article/:slug/edit" component={({ match }) => <EditPost user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
-					<Route path="/article/:slug" component={({ match }) => <Article user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
-					<Route path="/setting" component={({ match }) => <Setting user={this.state.user} slug={match.params.slug} isLoggedIn={this.state.isLoggedIn} />} />
-					<Route path="/profile/:username" component={({ match }) => <Profile user={this.state.user} username={match.params.username} isLoggedIn={this.state.isLoggedIn} />} />
-					<Route
-						path="/logout"
-						component={() => {
-							this.logout();
-							return <Redirect to="/" />;
-						}}
-					></Route>
-				</Switch>
+				<Header isLoggedIn={isLoggedIn} user={user} logout={this.logout} />
+				{isLoggedIn && user ? <AuthRoute user={user} isLoggedIn={isLoggedIn} updateState={this.updateState} logout={this.logout} /> : <NoAuthRoute updateState={this.updateState} logout={this.logout} />}
 			</Router>
 		);
 	}
+}
+
+function NoAuthRoute({ updateState }) {
+	return (
+		<Switch>
+			<Route path="/" exact>
+				<Home />
+			</Route>
+			<Route path="/register">
+				<Register updateState={updateState} />
+			</Route>
+			<Route path="/login">
+				<Login updateState={updateState} />
+			</Route>
+			<Route path="/article/:slug" component={({ match }) => <Article slug={match.params.slug} />} />
+			<Route path={["/create/article", "/article/:slug/edit", "/setting", "/profile/:username"]}>
+				<Redirect to="/login" />
+			</Route>
+			<Route path="*">
+				<NotFound />
+			</Route>
+		</Switch>
+	);
+}
+
+function AuthRoute({ user, isLoggedIn, updateState }) {
+	return (
+		<Switch>
+			<Route path="/" exact>
+				<Home isLoggedIn={isLoggedIn} user={user} />
+			</Route>
+			<Route path="/register">
+				<Register updateState={updateState} isLoggedIn={isLoggedIn} user={user} />
+			</Route>
+			<Route path="/login">
+				<Login updateState={updateState} isLoggedIn={isLoggedIn} user={user} />
+			</Route>
+			<Route path="/create/article">{isLoggedIn ? <NewPost isLoggedIn={isLoggedIn} /> : <Redirect to="/login" />}</Route>
+			<Route path="/article/:slug/edit" component={({ match }) => <EditPost user={user} slug={match.params.slug} isLoggedIn={isLoggedIn} />} />
+			<Route path="/article/:slug" component={({ match }) => <Article user={user} slug={match.params.slug} isLoggedIn={isLoggedIn} />} />
+			<Route path="/setting" component={({ match }) => <Setting user={user} slug={match.params.slug} isLoggedIn={isLoggedIn} />} />
+			<Route path="/profile/:username" component={({ match }) => <Profile user={user} username={match.params.username} isLoggedIn={isLoggedIn} />} />
+			<Route path="*">
+				<NotFound />
+			</Route>
+		</Switch>
+	);
 }
 
 export default App;

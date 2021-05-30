@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 class Navigation extends React.Component {
 
   constructor(props) {
@@ -17,9 +17,9 @@ class Navigation extends React.Component {
 
   render () {
     let Nav = null;
-    const user = this.props.user;
+    const { user, isLoggedIn, logout, history } = this.props;
 
-		if (this.props.isLoggedIn) {
+		if (isLoggedIn) {
 			Nav = (
 				<>
 					<Link to="/create/article" className="btn primary-btn mx-4">
@@ -37,7 +37,11 @@ class Navigation extends React.Component {
 							<Link to={`/setting`} className="capitalize p-4 border-t border-b border-gray-500 hover:bg-gray-200">
 								<i className="fal fa-user-cog mr-3"></i> Setting
 							</Link>
-							<a href="/logout" className="capitalize p-4 hover:bg-gray-200">
+							<a href="/logout" className="capitalize p-4 hover:bg-gray-200" onClick={(e) => {
+								e.preventDefault();
+								logout()
+								history.push("/");
+							}}>
 								<i className="fas fa-sign-out-alt mr-3"></i> Log out
 							</a>
 						</div>
@@ -55,7 +59,7 @@ class Navigation extends React.Component {
 					</Link>
 				</>
 			);
-    }
+		}
 
     return (
 		<nav className="flex justify-between items-center">
@@ -66,4 +70,4 @@ class Navigation extends React.Component {
   }
 }
 
-export default Navigation;
+export default withRouter(Navigation);

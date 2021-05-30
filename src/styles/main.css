@@ -16,15 +16,15 @@
   @apply bg-gray-200 text-black font-normal hover:bg-indigo-200;
 }
 
-input, label, textarea {
+input, label, textarea, #body, .body-content {
   @apply block m-2;
 }
 
-label {
+label, .body-content {
   @apply text-blue-400 uppercase;
 }
 
-input, textarea {
+input, textarea, #body {
   @apply p-2 focus-within:outline-none border-2 border-gray-500 rounded-md w-full;
 }
 

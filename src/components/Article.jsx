@@ -4,6 +4,7 @@ import getRequest from "../utils/getRequest";
 import Loader from "./Loader";
 import Author from "./Author"
 import Comment from "./Comment";
+import ParseJSONtoHTML from "./ParseJSONtoHTML";
 import NotFound from "./NotFound"
 class Article extends React.Component {
 	constructor(props) {
@@ -44,13 +45,13 @@ class Article extends React.Component {
 							<img src="https://images.unsplash.com/photo-1610859234494-6cb68d6361a2?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80" alt="" className="rounded" />
 						</div>
 						<div className="my-6">
-							<h2 className="text-gray-900 text-4xl font-extrabold break-words my-4 mr-4">{ article.title }</h2>
-							<Author author={ article.author }/>
-							<p className="whitespace-pre-wrap m-4">
-								{ article.body }
-							</p>
+							<h2 className="text-gray-900 text-4xl font-extrabold break-words my-4 mr-4">{article.title}</h2>
+							<Author author={article.author} />
+							<div className="whitespace-pre-wrap m-4">
+								<ParseJSONtoHTML data={JSON.parse(article.body)} />
+							</div>
 						</div>
-						<Tags tags={ article.tagList }/>
+						<Tags tags={article.tagList} />
 					</section>
 					<aside className="w-1/5 relative mx-8">
 						<div className="flex h-screen flex-col justify-center items-center sticky top-0">
@@ -67,7 +68,7 @@ class Article extends React.Component {
 					</aside>
 				</div>
 				<Comment isLoggedIn={isLoggedIn} slug={slug} />
-				<div className={ (article.author.username === user?.username) ? "fixed bottom-20 right-12" : "hidden" }>
+				<div className={article.author.username === user?.username ? "fixed bottom-20 right-12" : "hidden"}>
 					<Link to={`/article/${slug}/edit`} className="bg-green-100 text-2xl text-gray-800 font-bold p-4 rounded-full w-10 h-10">
 						<i className="fad fa-edit"></i>
 					</Link>
@@ -76,7 +77,6 @@ class Article extends React.Component {
 		);
 	}
 }
-
 
 
 function Tags (props) {

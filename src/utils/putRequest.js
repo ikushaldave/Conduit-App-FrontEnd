@@ -1,4 +1,5 @@
 async function putRequest(path = "", putContent = {}) {
+	console.log(putContent);
 	const response = await fetch(path, {
 		method: "PUT",
 		headers: {

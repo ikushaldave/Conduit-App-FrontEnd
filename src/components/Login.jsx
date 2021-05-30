@@ -58,10 +58,7 @@ class Login extends React.Component {
 	render () {
 		const { isLoggedIn, user } = this.props;
 
-		if (localStorage.getItem("token")) {
-			if (!(isLoggedIn && user)) return <Loader />;
-			return <Redirect to="/" />
-		}
+		if (isLoggedIn && user) return <Redirect to="/" />;
 
 		return (
 			<div className="container mx-auto">
